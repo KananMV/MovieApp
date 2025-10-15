@@ -71,10 +71,20 @@ extension HomeController: UICollectionViewDataSource, UICollectionViewDelegateFl
             }
             
             let vc = CategoryController(category: categoryType)
-            print(categoryType)
             self.navigationController?.pushViewController(vc, animated: true)
         }
+        
+        cell.idCallback = { id in
+            self.showMovieDetails(with: id)
+        }
+        
         return cell
+    }
+    
+    func showMovieDetails(with id: Int) {
+        let vm = MovieDetailsViewModel(id: id)
+        let vc = MovieDetailsController(viewModel: vm)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

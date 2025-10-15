@@ -35,6 +35,8 @@ class CategoryController: UIViewController {
         return view
     }()
     
+    var refreshControl = UIRefreshControl()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -44,23 +46,35 @@ class CategoryController: UIViewController {
     func setupView() {
         view.backgroundColor = .red
         view.addSubview(collectionView)
+        collectionView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(pulledRefres), for: .valueChanged)
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
     
     private func configureViewModel() {
-        viewModel.fetchCategory(category)
+        viewModel.fetchCategory(type: category)
         
         viewModel.success = {
             self.collectionView.reloadData()
+            self.refreshControl.endRefreshing()
             
         }
         
         viewModel.error = { message in
             print("Error:", message)
+            self.refreshControl.endRefreshing()
         }
     }
+    
+    @objc private func pulledRefres() {
+        viewModel.reset()
+        collectionView.reloadData()
+        viewModel.fetchCategory(type: category)
+    }
+    
+    
 }
 
 extension CategoryController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -76,6 +90,17 @@ extension CategoryController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: 168, height: 240)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let itemId = viewModel.movies[indexPath.item].id ?? 0
+        
+        let vc = MovieDetailsController(viewModel: .init(id: itemId))
+        navigationController?.show(vc, sender: nil)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        viewModel.pagination(index: indexPath.item, category: category)
     }
     
     

@@ -8,13 +8,13 @@
 import Foundation
 
 enum ActorEndpoint {
-    case popularActors
+    case popularActors(page: Int)
     case actorMovie(actorId: Int)
     
     var path: String {
         switch self {
-        case .popularActors:
-            return NetworkingHelper.shared.configureURL(endpoint: "person/popular")
+        case .popularActors(let page):
+            return NetworkingHelper.shared.configureURL(endpoint: "person/popular?page=\(page)")
         case .actorMovie(let actorId):
             return NetworkingHelper.shared.configureURL(endpoint: "person/\(actorId)/movie_credits")
         }

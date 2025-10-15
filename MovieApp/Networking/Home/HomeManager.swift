@@ -10,27 +10,27 @@ import Foundation
 class HomeManager: HomeUseCase {
     private let manager = NetworkManager()
     
-    func getNowPlayingMovies(completion: @escaping ((Movie?, String?) -> Void)) {
-        manager.request(url: HomeEndpoint.nowPlaying.path,
+    func getNowPlayingMovies(page: Int ,completion: @escaping ((Movie?, String?) -> Void)) {
+        manager.request(url: HomeEndpoint.nowPlaying(page: page).path,
                         model: Movie.self,
                         completion: completion)
     }
     
-    func getTopRatedMovies(completion: @escaping ((Movie?, String?) -> Void)) {
-        manager.request(url: HomeEndpoint.topRated.path,
+    func getTopRatedMovies(page: Int,completion: @escaping ((Movie?, String?) -> Void)) {
+        manager.request(url: HomeEndpoint.topRated(page: page).path,
                         model: Movie.self,
                         completion: completion)
     }
     
-    func getUpcomingMovies(completion: @escaping ((Movie?, String?) -> Void)) {
-        manager.request(url: HomeEndpoint.upcoming.path,
+    func getUpcomingMovies(page: Int,completion: @escaping ((Movie?, String?) -> Void)) {
+        manager.request(url: HomeEndpoint.upcoming(page: page).path,
                         model: Movie.self,
                         completion: completion)
     }
     
     
-    func getPopularMovies(completion: @escaping ((Movie?, String?) -> Void)) {
-        manager.request(url: HomeEndpoint.popularMovies.path,
+    func getPopularMovies(page: Int, completion: @escaping ((Movie?, String?) -> Void)) {
+        manager.request(url: HomeEndpoint.popularMovies(page: page).path,
                         model: Movie.self,
                         completion: completion)
     }

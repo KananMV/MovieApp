@@ -16,6 +16,7 @@ protocol HomeCellProtocol {
 class HomeCell: UICollectionViewCell {
     
     var callback: (() -> Void)?
+    var idCallback: ((Int)-> Void)?
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -108,5 +109,12 @@ extension HomeCell: UICollectionViewDataSource, UICollectionViewDelegate, UIColl
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: 168, height: collectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let id = items[indexPath.item].id {
+            idCallback?(id)
+        }
+        
     }
 }

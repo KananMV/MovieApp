@@ -15,7 +15,7 @@ class ActorManager: ActorUseCase {
         manager.request(url: ActorEndpoint.actorMovie(actorId: id).path, model: MovieCredit.self, completion: completion)
     }
     
-    func getPopularActors(completion: @escaping ((Actor?, String?) -> Void)) {
-        manager.request(url: ActorEndpoint.popularActors.path, model: Actor.self, completion: completion)
+    func getPopularActors(page: Int, completion: @escaping ((Actor?, String?) -> Void)) {
+        manager.request(url: ActorEndpoint.popularActors(page: page).path, model: Actor.self, completion: completion)
     }
 }

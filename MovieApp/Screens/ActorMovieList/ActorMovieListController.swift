@@ -60,7 +60,6 @@ class ActorMovieListController: UIViewController {
         
         vm.success = {
             self.collectionView.reloadData()
-            
         }
     }
 
@@ -80,6 +79,12 @@ extension ActorMovieListController: UICollectionViewDataSource, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: 168, height: 240)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let itemId = vm.items[indexPath.item].id ?? 0
+        let vc = MovieDetailsController(viewModel: .init(id: itemId))
+        navigationController?.show(vc, sender: nil)
     }
     
     

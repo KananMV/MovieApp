@@ -7,13 +7,22 @@
 
 import Foundation
 
-enum HomeEndpoint: String {
-    case popularMovies = "movie/popular"
-    case nowPlaying = "movie/now_playing"
-    case topRated = "movie/top_rated"
-    case upcoming = "movie/upcoming"
+enum HomeEndpoint {
+    case popularMovies(page: Int)
+    case nowPlaying(page: Int)
+    case topRated(page: Int)
+    case upcoming(page: Int)
     
     var path: String {
-        return NetworkingHelper.shared.configureURL(endpoint: self.rawValue)
+        switch self {
+        case .popularMovies(let page):
+            return NetworkingHelper.shared.configureURL(endpoint: "movie/popular?page=\(page)")
+        case .nowPlaying(let page):
+            return NetworkingHelper.shared.configureURL(endpoint: "movie/now_playing?page=\(page)")
+        case .topRated(let page):
+            return NetworkingHelper.shared.configureURL(endpoint: "movie/top_rated?page=\(page)")
+        case .upcoming(let page):
+            return NetworkingHelper.shared.configureURL(endpoint: "movie/upcoming?page=\(page)")
+        }
     }
 }

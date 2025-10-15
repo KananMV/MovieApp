@@ -24,53 +24,62 @@ final class HomeViewModel {
     var error: ((String) -> Void)?
     
     func getMovieData() {
-        getPopularMovies()
-        getUpcomingMovies()
-        getTopRatedMovies()
-        getNowPlayingMovies()
+        getPopularMovies {
+            self.getUpcomingMovies {
+                self.getTopRatedMovies {
+                    self.getNowPlayingMovies {
+                        print("All data fetched in order!")
+                    }
+                }
+            }
+        }
     }
-    
-    func getPopularMovies() {
-        manager.getPopularMovies { data, errorMessage in
+
+    private func getPopularMovies(completion: @escaping () -> Void) {
+        manager.getPopularMovies(page: 1) { data, errorMessage in
             if let errorMessage {
                 self.error?(errorMessage)
             } else if let data {
                 self.items.append(.init(title: "Popular Movies", movies: data.results ?? []))
                 self.success?()
             }
+            completion()
         }
     }
-    
-    func getNowPlayingMovies() {
-        manager.getNowPlayingMovies { data, errorMessage in
-            if let errorMessage {
-                self.error?(errorMessage)
-            } else if let data {
-                self.items.append(.init(title: "Now Playing", movies: data.results ?? []))
-                self.success?()
-            }
-        }
-    }
-    
-    func getTopRatedMovies() {
-        manager.getTopRatedMovies { data, errorMessage in
-            if let errorMessage {
-                self.error?(errorMessage)
-            } else if let data {
-                self.items.append(.init(title: "Top Rated", movies: data.results ?? []))
-                self.success?()
-            }
-        }
-    }
-    
-    func getUpcomingMovies() {
-        manager.getUpcomingMovies { data, errorMessage in
+
+    private func getUpcomingMovies(completion: @escaping () -> Void) {
+        manager.getUpcomingMovies(page: 1) { data, errorMessage in
             if let errorMessage {
                 self.error?(errorMessage)
             } else if let data {
                 self.items.append(.init(title: "Upcoming", movies: data.results ?? []))
                 self.success?()
             }
+            completion()
+        }
+    }
+
+    private func getTopRatedMovies(completion: @escaping () -> Void) {
+        manager.getTopRatedMovies(page: 1) { data, errorMessage in
+            if let errorMessage {
+                self.error?(errorMessage)
+            } else if let data {
+                self.items.append(.init(title: "Top Rated", movies: data.results ?? []))
+                self.success?()
+            }
+            completion()
+        }
+    }
+
+    private func getNowPlayingMovies(completion: @escaping () -> Void) {
+        manager.getNowPlayingMovies(page: 1) { data, errorMessage in
+            if let errorMessage {
+                self.error?(errorMessage)
+            } else if let data {
+                self.items.append(.init(title: "Now Playing", movies: data.results ?? []))
+                self.success?()
+            }
+            completion()
         }
     }
 }

@@ -26,26 +26,28 @@ enum CategoryType {
 final class CategoryViewModel {
     private let manager = HomeManager()
     var movies = [MovieResult]()
+    var data: Movie?
     
     var success: (() -> Void)?
     var error: ((String) -> Void)?
     
-    func fetchCategory(_ type: CategoryType) {
+    func fetchCategory(type: CategoryType) {
+        let page = data?.page ?? 0
         switch type {
         case .popular:
-            manager.getPopularMovies { data, errorMessage in
+            manager.getPopularMovies(page: page + 1) { data, errorMessage in
                 self.handleResponse(data: data, errorMessage: errorMessage)
             }
         case .nowPlaying:
-            manager.getNowPlayingMovies { data, errorMessage in
+            manager.getNowPlayingMovies(page: page + 1) { data, errorMessage in
                 self.handleResponse(data: data, errorMessage: errorMessage)
             }
         case .topRated:
-            manager.getTopRatedMovies { data, errorMessage in
+            manager.getTopRatedMovies(page: page + 1) { data, errorMessage in
                 self.handleResponse(data: data, errorMessage: errorMessage)
             }
         case .upcoming:
-            manager.getUpcomingMovies { data, errorMessage in
+            manager.getUpcomingMovies(page: page + 1) { data, errorMessage in
                 self.handleResponse(data: data, errorMessage: errorMessage)
             }
         }
@@ -55,8 +57,23 @@ final class CategoryViewModel {
         if let errorMessage {
             error?(errorMessage)
         } else if let data {
-            movies = data.results ?? []
+            self.data = data
+            movies.append(contentsOf: data.results ?? [])
             success?()
         }
+    }
+    
+    func pagination(index: Int, category: CategoryType) {
+        guard let page = data?.page else { return }
+        guard let totalPages = data?.totalPages else { return }
+        
+        if index == movies.count - 2 && page < totalPages {
+            fetchCategory(type: category)
+        }
+    }
+    
+    func reset() {
+        data = nil
+        movies = []
     }
 }

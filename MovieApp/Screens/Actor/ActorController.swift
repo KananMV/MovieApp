@@ -23,6 +23,8 @@ class ActorController: UIViewController {
         return view
     }()
     
+    let refreshControl = UIRefreshControl()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -33,6 +35,8 @@ class ActorController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(collectionView)
         title = "Actors"
+        collectionView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(pulledRefresh), for: .valueChanged)
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -41,13 +45,23 @@ class ActorController: UIViewController {
     func configureViewModel() {
         vm.getPopularActors()
         
+        
         vm.error = { errorMessage in
             print(errorMessage)
+            self.refreshControl.endRefreshing()
         }
         
         vm.success = {
             self.collectionView.reloadData()
+            self.refreshControl.endRefreshing()
         }
+    }
+    
+    @objc private func pulledRefresh() {
+        vm.reset()
+        collectionView.reloadData()
+        vm.getPopularActors()
+        
     }
 }
 extension ActorController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -74,5 +88,9 @@ extension ActorController: UICollectionViewDataSource, UICollectionViewDelegateF
         navigationController?.show(vc, sender: nil)
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        vm.pagination(index: indexPath.item)
+        print(indexPath.item)
+    }
     
 }

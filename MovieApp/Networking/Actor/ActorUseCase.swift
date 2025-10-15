@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ActorUseCase {
-    func getPopularActors(completion: @escaping ((Actor?, String?) -> Void))
+    func getPopularActors(page: Int,completion: @escaping ((Actor?, String?) -> Void))
     
     func getActorMovieById(id: Int,completion: @escaping ((MovieCredit?, String?) -> Void ))
 }
