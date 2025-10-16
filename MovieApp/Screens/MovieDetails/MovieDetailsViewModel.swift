@@ -16,6 +16,8 @@ class MovieDetailsViewModel {
     
     var items: AllMovieDetails?
     
+    var similarItems: Movie?
+    
     var id: Int
     
     init(id: Int) {
@@ -30,6 +32,18 @@ class MovieDetailsViewModel {
                 self.items = data
                 self.success?()
             }
+        }
+    }
+    
+    func getSimilarMovies() {
+        manager.getSimilarMovieById(id: id) { data, errorMessage in
+            if let errorMessage {
+                self.error?(errorMessage)
+            } else if let data {
+                self.similarItems = data
+                self.success?()
+            }
+            
         }
     }
 }

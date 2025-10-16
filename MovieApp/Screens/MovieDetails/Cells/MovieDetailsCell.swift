@@ -19,6 +19,8 @@ protocol MovieDetailsCellProtocol {
 class MovieDetailsCell: UICollectionViewCell {
     private let image: UIImageView = {
         let image = UIImageView()
+        image.layer.cornerRadius = 20
+        image.layer.masksToBounds = true
         return image
     }()
     

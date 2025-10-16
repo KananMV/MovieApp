@@ -23,11 +23,13 @@ class MovieDetailsController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        layout.minimumLineSpacing = 16
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
+        layout.minimumLineSpacing = 50
+        view.showsVerticalScrollIndicator = false
         view.dataSource = self
         view.delegate = self
         view.register(MovieDetailsCell.self, forCellWithReuseIdentifier: "MovieDetailsCell")
+        view.register(SimilarsCollectionViewCell.self, forCellWithReuseIdentifier: "SimilarsCollectionViewCell")
         return view
     }()
     
@@ -49,6 +51,7 @@ class MovieDetailsController: UIViewController {
     
     func configureViewModel() {
         viewModel.getMovieData()
+        viewModel.getSimilarMovies()
         viewModel.error = { errorMessage in
             print(errorMessage)
         }
@@ -58,24 +61,44 @@ class MovieDetailsController: UIViewController {
         }
     }
     
-
+    
 }
 
 extension MovieDetailsController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        1
+        2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieDetailsCell", for: indexPath) as? MovieDetailsCell else { return UICollectionViewCell() }
-        if let itemArr = viewModel.items {
-            cell.configure(data: itemArr)
+        if indexPath.row == 0 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieDetailsCell", for: indexPath) as? MovieDetailsCell else { return UICollectionViewCell() }
+            if let itemArr = viewModel.items {
+                cell.configure(data: itemArr)
+            }
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SimilarsCollectionViewCell", for: indexPath) as? SimilarsCollectionViewCell else { return UICollectionViewCell() }
+            
+            if let similarItems = viewModel.similarItems {
+                cell.configure(data: similarItems)
+            }
+            
+//            cell.completion = { id in
+//                let vc = MovieDetailsController(viewModel: .init(id: id))
+//                self.navigationController?.show(vc, sender: nil)
+//                
+//            }
+            return cell
         }
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: collectionView.frame.width-32, height: collectionView.frame.height/2)
+        if indexPath.row == 0 {
+            return CGSize(width: collectionView.frame.width - 32, height: collectionView.frame.height/2)
+        } else {
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.height / 4)
+        }
+        
     }
     
     

@@ -8,7 +8,12 @@
 import Foundation
 
 // MARK: - Movie
-struct Movie: Codable {
+struct Movie: Codable, SimilarsCollectionViewCellProtocol {
+    var movieArr: Movie {
+        self
+    }
+    
+    
     let page: Int?
     let results: [MovieResult]?
     let totalPages, totalResults: Int?
@@ -22,8 +27,10 @@ struct Movie: Codable {
 }
 
 // MARK: - MovieResult
-struct MovieResult: Codable, TopImageBottomLabelCellProtocol {
-
+struct MovieResult: Codable, TopImageBottomLabelCellProtocol/*, SimilarsCollectionViewCellProtocol*/ {
+//    var movieArr: [MovieResult] {
+//        [self]
+//    }
     
     
     var titleText: String {
@@ -33,7 +40,6 @@ struct MovieResult: Codable, TopImageBottomLabelCellProtocol {
     var imageURL: String {
         posterPath ?? ""
     }
-    
     
     let adult: Bool?
     let backdropPath: String?
