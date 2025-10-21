@@ -11,8 +11,8 @@ class SearchManager: SearchUseCase {
     
     let manager = NetworkManager()
     
-    func getMovieByQuery(query: String, completion: @escaping ((CoreModel<[MovieResult]>?, String?) -> Void)) {
-        manager.request(url: SearchEndpoint.movieSearch(query: query).path, completion: completion)
+    func getMovieByQuery(page: Int,query: String, completion: @escaping ((CoreModel<[MovieResult]>?, String?) -> Void)) {
+        manager.request(url: SearchEndpoint.movieSearch(query: query, page: page).path, completion: completion)
     }
     
 }

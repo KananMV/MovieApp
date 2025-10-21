@@ -13,19 +13,32 @@ class SearchViewModel {
     
     
     var items = [MovieResult]()
+    private var searchData: CoreModel<[MovieResult]>?
+    
     private var data: CoreModel<[MovieResult]>?
     var defaultItems = [MovieResult]()
+    
+    var currentQuery: String?
     
     var success: (() -> Void)?
     var error: ((String) -> Void)?
     
     func getSearchedMovieData(query: String) {
-        manager.getMovieByQuery(query: query) { data, errorMessage in
+        let page: Int
+        if currentQuery == query {
+            page = (searchData?.page ?? 0) + 1
+        } else {
+            page = 1
+            items.removeAll()
+        }
+        currentQuery = query
+        
+        manager.getMovieByQuery(page: page, query: query) { data, errorMessage in
             if let errorMessage = errorMessage {
-                print(errorMessage)
                 self.error?(errorMessage)
             } else if let data = data {
-                self.items = data.results ?? []
+                self.searchData = data
+                self.items.append(contentsOf: data.results ?? [])
                 self.success?()
             }
         }
@@ -51,6 +64,16 @@ class SearchViewModel {
         
         if index == defaultItems.count - 2 && page < totalPages {
             getMovieData()
+        }
+    }
+    
+    func tablePagination(index: Int) {
+        guard let page = searchData?.page else { return }
+        guard let totalPages = searchData?.totalPages else { return }
+        
+        if index == items.count - 2 && page < totalPages {
+            getSearchedMovieData(query: currentQuery ?? "")
+            
         }
     }
 }

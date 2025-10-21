@@ -110,6 +110,9 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         cordinator.start()
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        vm.tablePagination(index: indexPath.row)
+    }
     
     
 }

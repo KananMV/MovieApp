@@ -7,5 +7,5 @@
 
 import Foundation
 protocol SearchUseCase {
-    func getMovieByQuery(query: String, completion: @escaping ((CoreModel<[MovieResult]>?, String?) -> Void))
+    func getMovieByQuery(page: Int, query: String, completion: @escaping ((CoreModel<[MovieResult]>?, String?) -> Void))
 }
