@@ -1,16 +1,15 @@
 //
-//  SimilarsCollerctionViewCell.swift
+//  SimilarsCollectionViewCell.swift
 //  MovieApp
-//
-//  Created by Kenan Memmedov on 15.10.25.
 //
 
 import UIKit
 
-protocol SimilarsCollectionViewCellProtocol {
-    var movieArr: Movie { get }
+protocol SimilarItemProtocol: TopImageBottomLabelCellProtocol {
+    var id: Int? { get }
+    var title: String? { get }
+    var posterPath: String? { get }
 }
-
 
 class SimilarsCollectionViewCell: UICollectionViewCell {
     
@@ -28,7 +27,8 @@ class SimilarsCollectionViewCell: UICollectionViewCell {
         view.register(TopImageBottomLabelCell.self, forCellWithReuseIdentifier: "TopImageBottomLabelCell")
         return view
     }()
-
+    
+    private var items = [SimilarItemProtocol]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,31 +39,23 @@ class SimilarsCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var items = [MovieResult]()
-    
     private func setupView() {
-        contentView.backgroundColor = .clear
-        addSubview(collectionView)
-        
+        contentView.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-
     }
     
-    func configure(data: SimilarsCollectionViewCellProtocol) {
-        items = data.movieArr.results ?? []
+    func configure(data: [SimilarItemProtocol]) {
+        items = data
         collectionView.reloadData()
     }
-    
-    
 }
 
 extension SimilarsCollectionViewCell: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         items.count
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -77,9 +69,8 @@ extension SimilarsCollectionViewCell: UICollectionViewDataSource, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let itemId = items[indexPath.item].id ?? 0
-        completion?(itemId)
+        if let itemId = items[indexPath.item].id {
+            completion?(itemId)
+        }
     }
-    
-    
 }

@@ -26,30 +26,51 @@ class MovieDetailsCell: UICollectionViewCell {
     
     private let movieNameLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 24,weight: .semibold)
         return label
     }()
     
     private let movieLanguageLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .darkGray
         return label
     }()
     
     private let movieDurationLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .darkGray
+        label.textAlignment = .left
         return label
     }()
     
     private let movieRatingLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .right
+        label.textAlignment = .left
+        label.textColor = .darkGray
         return label
     }()
     
+    private func makeInfoStack(iconName: String, label: UILabel) -> UIStackView {
+        let icon = UIImageView(image: UIImage(systemName: iconName))
+        icon.tintColor = .darkGray
+        icon.contentMode = .scaleAspectFit
+        icon.snp.makeConstraints { make in
+            make.width.height.equalTo(16)
+        }
+        
+        let stack = UIStackView(arrangedSubviews: [icon, label])
+        stack.axis = .horizontal
+        stack.spacing = 4
+        stack.alignment = .center
+        return stack
+    }
+    
     private lazy var stackView: UIStackView = {
-        let view = UIStackView()
-        view.addArrangedSubview(movieLanguageLabel)
-        view.addArrangedSubview(movieDurationLabel)
-        view.addArrangedSubview(movieRatingLabel)
+        let langStack = makeInfoStack(iconName: "globe", label: movieLanguageLabel)
+        let durationStack = makeInfoStack(iconName: "clock", label: movieDurationLabel)
+        let ratingStack = makeInfoStack(iconName: "calendar", label: movieRatingLabel)
+        
+        let view = UIStackView(arrangedSubviews: [langStack, durationStack, ratingStack])
         view.axis = .horizontal
         view.distribution = .fillEqually
         view.alignment = .fill
@@ -89,7 +110,7 @@ class MovieDetailsCell: UICollectionViewCell {
     }
     
     func configure(data: MovieDetailsCellProtocol) {
-        image.loadImage(path: data.imageUrl)
+        image.loadImage(path: data.imageUrl, fileSize: .original)
         movieNameLabel.text = data.nameText
         movieLanguageLabel.text = data.languageText
         movieDurationLabel.text = data.durationText

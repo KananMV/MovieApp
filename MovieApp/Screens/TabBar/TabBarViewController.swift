@@ -31,13 +31,17 @@ class TabBarViewController: UITabBarController {
         let homeNav = UINavigationController(rootViewController: homeVC)
         homeNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         
+        let searchVC = SearchViewController()
+        let searchNav = UINavigationController(rootViewController: searchVC)
+        searchNav.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), selectedImage: UIImage(systemName: "magnifyingglass"))
+        
         let actorVC = ActorController()
         let actorNav = UINavigationController(rootViewController: actorVC)
         actorNav.tabBarItem = UITabBarItem(title: "Actors", image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
         
       
         
-        viewControllers = [homeNav, actorNav]
+        viewControllers = [homeNav, actorNav, searchNav]
         
         
     }

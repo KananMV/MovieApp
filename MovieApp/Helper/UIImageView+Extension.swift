@@ -9,8 +9,8 @@ import UIKit
 import Kingfisher
 
 extension UIImageView {
-    func loadImage(path: String) {
-        let url = URL(string: NetworkingHelper.shared.configureImageURL(path: path))
+    func loadImage(path: String, fileSize: FileSize) {
+        let url = URL(string: NetworkingHelper.shared.configureImageURL(path: path, fileSize: fileSize))
         kf.setImage(with: url)
     }
 }

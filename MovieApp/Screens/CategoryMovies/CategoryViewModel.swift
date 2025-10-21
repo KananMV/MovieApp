@@ -26,7 +26,7 @@ enum CategoryType {
 final class CategoryViewModel {
     private let manager = HomeManager()
     var movies = [MovieResult]()
-    var data: Movie?
+    private var data: CoreModel<[MovieResult]>?
     
     var success: (() -> Void)?
     var error: ((String) -> Void)?
@@ -53,7 +53,7 @@ final class CategoryViewModel {
         }
     }
     
-    private func handleResponse(data: Movie?, errorMessage: String?) {
+    private func handleResponse(data: CoreModel<[MovieResult]>?, errorMessage: String?) {
         if let errorMessage {
             error?(errorMessage)
         } else if let data {

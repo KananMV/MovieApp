@@ -41,6 +41,11 @@ class MovieDetailsController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
     func setupView() {
         view.addSubview(collectionView)
         
@@ -79,15 +84,13 @@ extension MovieDetailsController: UICollectionViewDataSource, UICollectionViewDe
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SimilarsCollectionViewCell", for: indexPath) as? SimilarsCollectionViewCell else { return UICollectionViewCell() }
             
-            if let similarItems = viewModel.similarItems {
-                cell.configure(data: similarItems)
-            }
+            cell.configure(data: viewModel.similarItems)
             
-//            cell.completion = { id in
-//                let vc = MovieDetailsController(viewModel: .init(id: id))
-//                self.navigationController?.show(vc, sender: nil)
-//                
-//            }
+            cell.completion = { id in
+                let cordinator = MovieDetailsCordinator(navigation: self.navigationController ?? UINavigationController(), movieId: id)
+                cordinator.start()
+                
+            }
             return cell
         }
     }

@@ -7,32 +7,10 @@
 
 import Foundation
 
-// MARK: - Movie
-struct Movie: Codable, SimilarsCollectionViewCellProtocol {
-    var movieArr: Movie {
-        self
-    }
-    
-    
-    let page: Int?
-    let results: [MovieResult]?
-    let totalPages, totalResults: Int?
-    
 
-    enum CodingKeys: String, CodingKey {
-        case page, results
-        case totalPages = "total_pages"
-        case totalResults = "total_results"
-    }
-}
-
-// MARK: - MovieResult
-struct MovieResult: Codable, TopImageBottomLabelCellProtocol/*, SimilarsCollectionViewCellProtocol*/ {
-//    var movieArr: [MovieResult] {
-//        [self]
-//    }
+struct MovieResult: Codable, TopImageBottomLabelCellProtocol, SimilarItemProtocol, SearchTableViewCellProtocol {
     
-    
+        
     var titleText: String {
         title ?? ""
     }

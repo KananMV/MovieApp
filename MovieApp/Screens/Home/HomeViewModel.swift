@@ -28,7 +28,6 @@ final class HomeViewModel {
             self.getUpcomingMovies {
                 self.getTopRatedMovies {
                     self.getNowPlayingMovies {
-                        print("All data fetched in order!")
                     }
                 }
             }

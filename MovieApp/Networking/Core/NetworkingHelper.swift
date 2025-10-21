@@ -13,10 +13,15 @@ enum EncodingType {
     case json, url
 }
 
+enum FileSize: String {
+    case w300 = "w300"
+    case original = "original"
+}
+
 final class NetworkingHelper {
     private let version = "3"
     private let baseURL = "https://api.themoviedb.org/"
-    private let imageBaseURL = "https://image.tmdb.org/t/p/original"
+    private let imageBaseURL = "https://image.tmdb.org/t/p/"
     
     let headers: HTTPHeaders = ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNGY3M2Q3ZTZhZDQ3NmJhNDQ0MDI1MzJiMWVkYWE0YiIsIm5iZiI6MTc2MDE3MDc1Ni4yODYsInN1YiI6IjY4ZWExMzA0OWRkN2JhM2E1MzhhYTVkNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.YgSXGldgz9hrSLSZwyP-6DZ7LOUSfz8cj_VrQyNxScY"]
     
@@ -28,7 +33,7 @@ final class NetworkingHelper {
         baseURL + version + "/" + endpoint
     }
     
-    func configureImageURL(path: String) -> String {
-        imageBaseURL + path
+    func configureImageURL(path: String, fileSize: FileSize) -> String {
+        return imageBaseURL + fileSize.rawValue + path
     }
 }

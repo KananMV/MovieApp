@@ -46,6 +46,7 @@ class HomeCell: UICollectionViewCell {
         collectionView.register(TopImageBottomLabelCell.self, forCellWithReuseIdentifier: "TopImageBottomLabelCell")
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
     

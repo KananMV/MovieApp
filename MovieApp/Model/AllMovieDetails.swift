@@ -17,15 +17,20 @@ struct AllMovieDetails: Codable, MovieDetailsCellProtocol {
     }
     
     var languageText: String {
-        originalLanguage ?? ""
+        spokenLanguages?.first?.englishName ?? "Unknown"
     }
     
     var durationText: String {
-        releaseDate ?? ""
+        guard let runtime = runtime else { return "00:00:00" }
+        
+        let hours = runtime / 60
+        let minutes = runtime % 60
+        
+        return String(format: "%02d:%02d:00", hours, minutes)
     }
     
     var ratingText: String {
-        status ?? ""
+        releaseDate ?? ""
     }
     
     let adult: Bool?

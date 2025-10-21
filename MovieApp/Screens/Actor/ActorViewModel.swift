@@ -8,7 +8,7 @@
 import Foundation
 
 class ActorViewModel {
-    var data: Actor?
+    var data: CoreModel<[ActorResult]>?
     
     var items = [ActorResult]()
     let manager = ActorManager()

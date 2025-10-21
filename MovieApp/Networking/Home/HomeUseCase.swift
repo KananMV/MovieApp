@@ -8,10 +8,10 @@
 import Foundation
 
 protocol HomeUseCase {
-    func getPopularMovies(page: Int, completion: @escaping ((Movie?, String?) -> Void))
-    func getNowPlayingMovies(page: Int, completion: @escaping ((Movie?, String?) -> Void))
-    func getTopRatedMovies(page: Int, completion: @escaping ((Movie?, String?) -> Void))
-    func getUpcomingMovies(page: Int, completion: @escaping ((Movie?, String?) -> Void))
+    func getPopularMovies(page: Int, completion: @escaping ((CoreModel<[MovieResult]>?, String?) -> Void))
+    func getNowPlayingMovies(page: Int, completion: @escaping ((CoreModel<[MovieResult]>?, String?) -> Void))
+    func getTopRatedMovies(page: Int, completion: @escaping ((CoreModel<[MovieResult]>?, String?) -> Void))
+    func getUpcomingMovies(page: Int, completion: @escaping ((CoreModel<[MovieResult]>?, String?) -> Void))
 }
 
 

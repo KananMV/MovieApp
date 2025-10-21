@@ -83,8 +83,8 @@ extension ActorMovieListController: UICollectionViewDataSource, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let itemId = vm.items[indexPath.item].id ?? 0
-        let vc = MovieDetailsController(viewModel: .init(id: itemId))
-        navigationController?.show(vc, sender: nil)
+        let cordinator = MovieDetailsCordinator(navigation: self.navigationController ?? UINavigationController(), movieId: itemId)
+        cordinator.start()
     }
     
     

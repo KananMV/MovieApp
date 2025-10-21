@@ -52,7 +52,7 @@ class TopImageBottomLabelCell: UICollectionViewCell {
     }
     
     func configure(data: TopImageBottomLabelCellProtocol) {
-        image.loadImage(path: data.imageURL)
+        image.loadImage(path: data.imageURL, fileSize: .w300 )
         label.text = data.titleText
     }
     

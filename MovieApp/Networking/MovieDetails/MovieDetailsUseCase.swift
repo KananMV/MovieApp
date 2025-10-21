@@ -9,5 +9,5 @@ import Foundation
 
 protocol MovieDetailsUseCase {
     func getMovieDetailsById(id: Int, completion: @escaping ((AllMovieDetails?, String?) -> Void))
-    func getSimilarMovieById(id: Int, completion: @escaping ((Movie?, String?) -> Void))
+    func getSimilarMovieById(id: Int, completion: @escaping ((CoreModel<[MovieResult]>?, String?) -> Void))
 }

@@ -16,7 +16,7 @@ class MovieDetailsViewModel {
     
     var items: AllMovieDetails?
     
-    var similarItems: Movie?
+    var similarItems = [SimilarItemProtocol]()
     
     var id: Int
     
@@ -40,7 +40,7 @@ class MovieDetailsViewModel {
             if let errorMessage {
                 self.error?(errorMessage)
             } else if let data {
-                self.similarItems = data
+                self.similarItems = data.results ?? []
                 self.success?()
             }
             

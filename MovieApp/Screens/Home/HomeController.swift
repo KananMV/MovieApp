@@ -82,9 +82,8 @@ extension HomeController: UICollectionViewDataSource, UICollectionViewDelegateFl
     }
     
     func showMovieDetails(with id: Int) {
-        let vm = MovieDetailsViewModel(id: id)
-        let vc = MovieDetailsController(viewModel: vm)
-        navigationController?.pushViewController(vc, animated: true)
+        let cordinator = MovieDetailsCordinator(navigation: self.navigationController ?? UINavigationController(), movieId: id)
+        cordinator.start()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
